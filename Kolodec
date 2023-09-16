@@ -1,0 +1,8 @@
+k = int(input())
+m = 10
+l = 7
+n = 5
+result = 0
+for j in range(0, k):
+    result += l*2 + n*2 + m*2 + j*m*2
+print(result)
