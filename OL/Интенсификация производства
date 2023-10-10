@@ -1,5 +1,5 @@
 my_spsk = []
-f = open("Input8.txt", 'r')
+f = open("Input.txt", 'r')
 for line in f:
     my_spsk.append(line)
 #print(my_spsk)
