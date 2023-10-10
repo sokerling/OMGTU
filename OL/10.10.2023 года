@@ -1,0 +1,57 @@
+my_spsk = []
+f=open("input.txt", 'r')
+for line in f:
+    my_spsk.append(line)
+print(my_spsk)
+result = 0
+my_spsk1 = []
+data11 = my_spsk[0][:-1].split('.')
+data22 = my_spsk[1][:-1].split('.')
+dengi = int(my_spsk[2])
+raven = False
+data_month1 = int(data11[1])
+data_month2 = int(data22[1])
+data_years1 = int(data11[2])
+data_years2 = int(data22[2])
+data_days1 = int(data11[0])
+data_days2 = int(data22[0])
+data_years2_global = data_years2
+spsk_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+print(data_years1, data_years2_global)
+print(data_month1, data_month2)
+print(data_days1, data_days2)
+if data_month2 > data_month1:
+    spsk_month = spsk_month[data_month1-1:data_month2-1]
+elif data_month2 < data_month1:
+    spsk_month_first = spsk_month[data_month1-1:]
+    print(spsk_month_first)
+    spsk_month_second = spsk_month[:data_month2-1]
+    print(spsk_month_second)
+    spsk_month = spsk_month_first + spsk_month_second
+    print(spsk_month)
+    data_years2 -= 1
+else:
+    spsk_month = [0]
+    raven = True
+if data_days2 < data_days1:
+    spsk_month.append(data_days2)
+    spsk_month[0] = spsk_month[0] - data_days1
+elif data_days2 > data_days1:
+    spsk_month[0] = spsk_month[0] - data_days1
+    spsk_month.append(data_days2)
+print(spsk_month)
+between_years = data_years2 - data_years1
+if not raven:
+    between_month = sum(spsk_month)
+else:
+    between_month = data_days2 - data_days1
+days = between_years*365 + between_month
+num = 0
+for j in range(data_years1, data_years2_global + 1):
+    if j % 4 == 0:
+        days += 1
+        num += 1
+for j in range(days + 1):
+    my_spsk1.append(dengi)
+    dengi += 1
+print(sum(my_spsk1))
