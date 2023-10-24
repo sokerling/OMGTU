@@ -93,7 +93,7 @@ if m2 == b:
     if (s3 == c): #верхняя
         dist = dlina_vectora(vektor_iz_tochek([b + m1, m3, 0], [s2, c + s1, 0]))
     if (s1 == a): #правая
-        dist = dlina_vectora(vektor_iz_tochek([-(b + m1), m3, 0], [s1, s3, 0]))
+        dist = dlina_vectora(vektor_iz_tochek([b + m1, m3, 0], [b + a + b - s2, s3, 0]))
     if (s2 == 0): #ближняя
         dist = min(dlina_vectora(vektor_iz_tochek([m1, c + b + c -m3, 0], [s1, s3, 0])),
                    dlina_vectora(vektor_iz_tochek([a + b + a - m1, m3, 0], [s1, s3, 0])),
@@ -101,20 +101,22 @@ if m2 == b:
                    dlina_vectora(vektor_iz_tochek([-(b + m1), m3, 0], [s1, s3, 0])))
 #муха справа
 if m1 == a:
-    if (s1 == a): #правая   
+    if (s1 == a): #правая
         dist = dlina_vectora(vektor_iz_tochek([m1, m2, m3], [s1, s2, s3]))
     if (s2 == 0): #ближняя
-        dist = dlina_vectora(vektor_iz_tochek([m1 + a, m3, 0], [s1, s3, 0]))
+        dist = dlina_vectora(vektor_iz_tochek([a + m2, m3, 0], [s1, s3, 0]))
+        print(round(dist, 3))
+        exit()
     if (s3 == 0): #нижняя
         dist = dlina_vectora(vektor_iz_tochek([m2, a + m3, 0], [s2, s1, 0]))
     if (s3 == c): #верхняя
         dist = dlina_vectora(vektor_iz_tochek([m2, c + a + c - m3, 0], [s2, c + s1, 0]))
     if (s2 == b): #дальняя
         dist = dlina_vectora(vektor_iz_tochek([b + a + b - m2, m3, 0], [b + s1, s3, 0]))
-    if (s1 == 0): #левая 
+    if (s1 == 0): #левая
         dist = min(dlina_vectora(vektor_iz_tochek([m2, c + a + c - m3, 0], [s2, s3, 0])),
                    dlina_vectora(vektor_iz_tochek([a + m2, m3, 0], [-s2, s3, 0])),
                    dlina_vectora(vektor_iz_tochek([m2, -(a + m3), 0], [s2, s3, 0])),
                    dlina_vectora(vektor_iz_tochek([b + a + b - m2, m3, 0], [s2, s3, 0])))
 
-print(dist)
+print(round(dist, 3))
