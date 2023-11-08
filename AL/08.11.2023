@@ -1,0 +1,67 @@
+using System;
+
+namespace ConsoleApplication24
+{
+    class Program
+    {
+        static void Main()
+        {
+            int N = Convert.ToInt32(Console.ReadLine()), M = Convert.ToInt32(Console.ReadLine()), result = 0;
+            int[,] mas = new int[N, M];
+            int[] spsk = new int[M];
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = 0; j < M; j++)
+                {
+                    mas[i,j] = Convert.ToInt32(Console.ReadLine());
+                }
+            }
+            for (int i = 0; i < N; i++)
+            {
+                spsk = new int[M];
+                for (int j = 0; j < M; j++)
+                {
+                    spsk[j] = mas[i, j];
+                }
+                if (Vozvrat(spsk))
+                {
+                    result += 1;
+                }
+            }
+            Console.WriteLine(result);
+
+        }
+
+        static bool Vozvrat(int[] spsk)
+        {
+        int min, max;
+        for (int i = 0; i < spsk.Length; i++)
+			{
+            if (i == 0) 
+            {
+                min = spsk[i];
+                max = spsk[i];
+            }
+            else
+            {
+                if (min > spsk[i])
+                {
+                    min = spsk[i];
+                }
+                if (max < spsk[i])
+                {
+                    max = spsk[i];
+                }
+            }
+			}
+        if (((max % 2) == 0) && (min % 2 == 0))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        }
+    }
+}
