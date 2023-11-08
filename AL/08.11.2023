@@ -9,13 +9,7 @@ namespace ConsoleApplication24
             int N = Convert.ToInt32(Console.ReadLine()), M = Convert.ToInt32(Console.ReadLine()), result = 0;
             int[,] mas = new int[N, M];
             int[] spsk = new int[M];
-            for (int i = 0; i < N; i++)
-            {
-                for (int j = 0; j < M; j++)
-                {
-                    mas[i,j] = Convert.ToInt32(Console.ReadLine());
-                }
-            }
+            mas = Filling(N, M, mas);
             for (int i = 0; i < N; i++)
             {
                 spsk = new int[M];
@@ -23,7 +17,7 @@ namespace ConsoleApplication24
                 {
                     spsk[j] = mas[i, j];
                 }
-                if (Vozvrat(spsk))
+                if (((Min(spsk) % 2) == 0) && ((Max(spsk) % 2) == 0))
                 {
                     result += 1;
                 }
@@ -32,36 +26,56 @@ namespace ConsoleApplication24
 
         }
 
-        static bool Vozvrat(int[] spsk)
+        static int[,] Filling(int N, int M, int[,] mas)
         {
-        int min, max;
-        for (int i = 0; i < spsk.Length; i++)
-			{
-            if (i == 0) 
+            for (int i = 0; i < N; i++)
             {
-                min = spsk[i];
-                max = spsk[i];
-            }
-            else
-            {
-                if (min > spsk[i])
+                for (int j = 0; j < M; j++)
                 {
-                    min = spsk[i];
+                    mas[i, j] = Convert.ToInt32(Console.ReadLine());
                 }
-                if (max < spsk[i])
+            }
+            return mas;
+        }
+
+        static int Max(int[] spsk)
+        {
+            int max = 0;
+            for (int i = 0; i < spsk.Length; i++)
+            {
+                if (i == 0)
                 {
                     max = spsk[i];
                 }
+                else
+                {
+                    if (max < spsk[i])
+                    {
+                        max = spsk[i];
+                    }
+                }
             }
-			}
-        if (((max % 2) == 0) && (min % 2 == 0))
-        {
-            return true;
+            return max;
         }
-        else
+
+        static int Min(int[] spsk)
         {
-            return false;
-        }
+            int min = 0;
+            for (int i = 0; i < spsk.Length; i++)
+            {
+                if (i == 0)
+                {
+                    min = spsk[i];
+                }
+                else
+                {
+                    if (min > spsk[i])
+                    {
+                        min = spsk[i];
+                    }
+                }
+            }
+            return min;
         }
     }
 }
