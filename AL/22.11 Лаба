@@ -1,0 +1,72 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication25
+{
+
+    class Student
+    {
+        public static void FindByYear(Student st, string Year)
+        {
+            if (st.year == Year)
+            {
+                Console.WriteLine(st.fio+" "+st.group+" "+st.year);
+            }
+        }
+        public static void FindByGroup(Student st, string group)
+        {
+            if (st.group == group)
+            {
+                Console.WriteLine(st.fio + " " + st.group + " " + st.year);
+            }
+        }
+        string fio, group, year;
+        public Student(string fio, string group, string year)
+        {
+            this.fio = fio;
+            this.group = group;
+            this.year = year;
+        }
+
+        public string Fio
+        {
+            set { this.fio = value; }
+            get {return this.fio;}
+        }
+
+
+    }
+
+    class Program
+    {
+        static void Main()
+        {
+            Student[] students = new Student[3];
+            students[0] = new Student("ФИО", "FIT-231", "2013");
+            students[1] = new Student("ФИО1", "FIT-232", "2005");
+            students[2] = new Student("ФИО2", "FIT-231", "2013");
+            string filterType = Console.ReadLine();
+            if(filterType == "3")
+            {
+                Console.Write("Введите год рождения студента: ");
+                string Year = Console.ReadLine();
+                foreach(Student i in students)
+                {
+                    Student.FindByYear(i, Year);
+                }
+            } 
+            else if(filterType == "2")
+            {
+                Console.Write("Введите группу студента: ");
+                string group = Console.ReadLine();
+                foreach(Student i in students)
+                {
+                    Student.FindByGroup(i, group);
+                }
+            }
+        }
+    }
+}
