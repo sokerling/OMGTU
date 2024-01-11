@@ -1,0 +1,10 @@
+import math
+with open(f'input_s1_01.txt') as file:
+    num = int(file.readline())
+    degree = int(math.log(num, 2))
+    result = 0
+    if degree == 0:
+        result = 0
+    else:
+        result = min(abs(2 ** degree - num), abs(2 ** (degree + 1) - num))
+print(result)
