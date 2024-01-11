@@ -1,8 +1,0 @@
-file = open("input1.txt", "r")
-num = int(file.readline())
-d = []
-for i in range(num):
-    s = file.readline().split(" ")
-    X1, Y1, Z1, X2, Y2, Z2, C1, C2 = int(s[0]), int(s[1]), int(s[2]), int(s[3]), int(s[4]), int(s[5]), float(s[6]), float(s[7])
-    d.append(round((C2-((C1*(X2*Y2+Y2*Z2+X2*Z2))/(X1*Y1+Y1*Z1+X1*Z1)))/(((X2*Y2*Z2)/(1000))-((X1*Y1*Z1*(X2*Y2+Y2*Z2+X2*Z2))/(1000*(X1*Y1+Y1*Z1+X1*Z1)))),2))
-print(f"{d.index(min(d)) + 1} {min(d)}")
