@@ -1,0 +1,90 @@
+import sys
+
+
+print("Введите количество вершин")
+num = int(input())
+print("Введите названия вершин")
+spsk = []
+for j in range(0, num):
+    spsk.append(int(input()))
+
+
+print("Введите количесвто рёбер")
+num1 = int(input())
+print("Введите названия рёбер")
+spsk1 = []
+for j in range(0, num1):
+        a = int(input())
+        b = int(input())
+        ab = [a, b]
+        spsk1.append(ab)
+print("Введите вес рёбер")
+spsk_ves = []
+for j in range(0, num1):
+    spsk_ves.append(int(input()))
+
+
+spsk_ves1 = []
+for j in spsk_ves:
+    spsk_ves1.append(j)
+sort_index = []
+for j in range(0, num1):
+    minval = min(spsk_ves)
+    indmin = spsk_ves.index(minval)
+    if minval != sys.maxsize:
+        sort_index.append(indmin)
+        spsk_ves[indmin] = sys.maxsize
+
+
+result = 0
+group1 = []
+for j in sort_index:
+    if result == 0:
+        result += spsk_ves1[j]
+        group1.append(spsk1[j])
+    else:
+        summ = 0
+        for i in range(len(group1)):
+            #print(spsk1[j][0], spsk1[j][1], group1[i])
+            if spsk1[j][0] in group1[i] and spsk1[j][1] in group1[i]:
+                #print("Уже есть")
+                break
+            elif spsk1[j][0] in group1[i]:
+                #print("Совпадает первый")
+                if len(group1) != 1:
+                    for h in group1[1:]:
+                        if spsk1[j][1] in h:
+                            for k in h:
+                                group1[i].append(k)
+                            group1.remove(h)
+                        else:
+                            group1[i].append(spsk1[j][1])
+                else:
+                    group1[i].append(spsk1[j][1])
+                #print(group1)
+                result += spsk_ves1[j]
+                break
+            elif spsk1[j][1] in group1[i]:
+                #print("Совпадает второй")
+                if len(group1) != 1:
+                    for h in group1[1:]:
+                        if spsk1[j][0] in h:
+                            for k in h:
+                                group1[i].append(k)
+                            group1.remove(h)
+                        else:
+                            group1[i].append(spsk1[j][0])
+                else:
+                    group1[i].append(spsk1[j][0])
+                result += spsk_ves1[j]
+                #print(group1)
+                break
+            else:
+                summ += 1
+                #print("Не совпадает")
+                if summ == len(group1):
+                    ab = [spsk1[j][0], spsk1[j][1]]
+                    group1.append(ab)
+                    result += spsk_ves1[j]
+            #print(group1)
+print(f"        ОТВЕТ: {result}")
