@@ -1,0 +1,91 @@
+using System;
+
+namespace Lab_05_12_23
+{
+
+    class Cars
+    {
+        string name, year, colour;
+        string[] owners;
+        string[] osmotr;
+        public Cars(string name, string year, string colour, string[] owners, string[] osmotr)
+        {
+            this.name = name;
+            this.year = year;
+            this.colour = colour;
+            this.owners = owners;
+            this.osmotr = osmotr;
+        }
+        public static void FindByCheck(Cars cs, string Osmotr)
+        {
+            foreach (string str in cs.osmotr)
+            {
+                if (str == Osmotr)
+                {
+                    Console.Write(cs.name + " " + cs.year + " " + cs.colour + " ");
+                    foreach (string vlad in cs.owners)
+                    {
+                        Console.Write(vlad + " ");
+                    }
+                    Console.WriteLine("");
+                }
+            }
+        }
+        public static void FindByYear(Cars cs, string Year)
+        {
+            if (cs.year == Year)
+            {
+                Console.WriteLine(cs.name + " " + cs.colour);
+            }
+        }
+        public static void FindByOwners(Cars cs)
+        {
+            Console.WriteLine(cs.name + " " + cs.year + " " + cs.colour + " " + cs.owners[cs.owners.Length - 1]);
+        }
+    }
+
+    class Program
+    {
+        static void Main()
+        {
+            string fltr;
+            string[] owners1 = new string[3] { "Андреев Андрей Андреевич", "Александров Александр Александрович", "Петров Петр Петрович" };
+            string[] osmotr1 = new string[3] { "2011", "2013", "2016" };
+            string[] owners2 = new string[2] { "Андреев Андрей Андреевич", "Кириллов Кирилл Кириллович" };
+            string[] osmotr2 = new string[3] { "2005", "2010", "2015" };
+            string[] owners3 = new string[2] { "Александров Александр Александрович", "Сергеев Сергей Сергеевич" };
+            string[] osmotr3 = new string[3] { "2006", "2011", "2016" };
+            Cars[] cars = new Cars[3];
+            cars[0] = new Cars("Toyota", "2011", "blue", owners1, osmotr1);
+            cars[1] = new Cars("Chevrolet", "2005", "gray", owners2, osmotr2);
+            cars[2] = new Cars("KIA", "2005", "black", owners3, osmotr3);
+            Console.WriteLine("Введите фильтр поиска (Год\\Техосмотр\\Владельцы)");
+            fltr = Console.ReadLine();
+            if (fltr == "Год")
+            {
+                Console.Write("Введите год производства машины: ");
+                string Year = Console.ReadLine();
+                foreach (Cars i in cars)
+                {
+                    Cars.FindByYear(i, Year);
+                }
+            }
+            else if (fltr == "Техосмотр")
+            {
+                Console.Write("Введите год техосмотра: ");
+                string Osmotr = Console.ReadLine();
+                foreach (Cars i in cars)
+                {
+                    Cars.FindByCheck(i, Osmotr);
+                }
+            }
+            else if (fltr == "Владельцы")
+            {
+                foreach (Cars i in cars)
+                {
+                    Cars.FindByOwners(i);
+                }
+            }
+        }
+    }
+}
