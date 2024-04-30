@@ -1,0 +1,36 @@
+using System;
+
+namespace Lab_10._10._23_N1
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            int a = 0, n = Convert.ToInt32(Console.ReadLine()) + 1;
+            int[] mas = new int[n];
+            for (int i = 1; i < n; i++)
+            {
+                mas[i] = Convert.ToInt32(Console.ReadLine());
+            }
+            foreach (int r in mas)
+            {
+                if ((r != 0) && (Array.IndexOf(mas, r) != 0))
+                {
+                    if (r % Array.IndexOf(mas, r) == 0)
+                    {
+                        a += 1;
+                    }
+                }
+            }
+            if (a == n - 1)
+            {
+                Console.WriteLine("Все элементы кратны индексу");
+            }
+            else
+            {
+                Console.WriteLine("Не все элементы кратны индексу");
+            }
+        }
+
+    }
+}
