@@ -1,0 +1,25 @@
+using System;
+
+namespace Lab_11._10._23_N5
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            int n = Convert.ToInt32(Console.ReadLine());
+            int[] mas = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                mas[i] = Convert.ToInt32(Console.ReadLine());
+            }
+            for (int i = 0; i < n; i++)
+            {
+                if ((mas[i] < 0) && (Math.Abs(mas[i]) % 10 == 3))
+                {
+                    Console.WriteLine("В массиве имеется отрицательный элемент, оканчивающийся на 3");
+                    break;
+                }
+            }
+        }
+    }
+}
