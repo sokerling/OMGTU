@@ -1,0 +1,33 @@
+using System;
+
+namespace Lab_10._10._23_N4
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            int a = 0, n = Convert.ToInt32(Console.ReadLine());
+            int[] mas = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                mas[i] = Convert.ToInt32(Console.ReadLine());
+            }
+            foreach (int r in mas)
+            {
+                if (r % mas.Min() == 0)
+                {
+                    a += 1;
+                }
+            }
+            if (a != 0)
+            {
+                Console.WriteLine("Количество элементов, кратных минимальному элементу (считая этот элемент): " + a);
+            }
+            else
+            {
+                Console.WriteLine("Нет элементов, кратных минимальному: ");
+            }
+        }
+
+    }
+}
