@@ -1,0 +1,99 @@
+import random
+
+
+print("Введите количество вершин")
+num = int(input())
+my_spsk = []
+my_spsk1 = []
+for j in range(1, num + 1):
+    my_spsk.append(j - 1)
+    my_spsk1.append(j)
+
+
+table = [0] * num 
+for i in range(num): 
+    table[i] = [0] * num
+print(f"Введите числа в следующем формате для n вершины: -1, если вершина не смежна вершине m и любое другое число, если вершина n смежна m")
+for j in range(0, num):
+    for i in range(0, num):
+        if j != i:
+            print(f"Вершина {j + 1} врешине {i + 1}")
+            a = int(input())
+            if a == -1:
+                table[j][i] = 9999999
+            else:
+                table[j][i] = a
+        else:
+            pass
+
+start = my_spsk[random.randint(0, num - 1)]
+my_spsk.remove(start)
+spsk2 = [start]
+
+road_length = 0
+
+while my_spsk:
+    min_path_all = 99999999999
+    rebro = None
+
+    for j in spsk2:
+        ves = table[j]
+
+        svob_min = j
+        min_p = 999999999
+
+        for i in range(num):
+            path = ves[i]
+            if path == 0:
+                continue
+
+            if path < min_p and i in my_spsk:
+                svob_min = i
+                min_p = path
+
+        if svob_min != j:
+            if min_path_all > min_p:
+                rebro = (j, svob_min)
+                min_path_all = min_p
+    path_length = table[rebro[0]][rebro[1]]
+
+    print(f"Ребро {my_spsk1[rebro[0]]}, {my_spsk1[rebro[1]]} его длина: {path_length}")
+
+    road_length += path_length
+    my_spsk.remove(rebro[1])
+    spsk2.append(rebro[1])
+
+print(f"Длина пути: {road_length}")
+
+
+#Пример:
+7
+-1
+-1
+-1
+8
+7
+2
+-1
+-1
+11
+-1
+2
+9
+11
+6
+-1
+-1
+9
+10
+-1
+-1
+-1
+11
+10
+9
+8
+11
+6
+-1
+9
