@@ -3,7 +3,7 @@ import sys
 
 print("Введите количество вершин")
 num = int(input())
-print("Введите названия вершин")
+print("Введите названия вершин (обозначьте их цифрами и вводите в формате 1 строка - 1 вершина)")
 spsk = []
 for j in range(0, num):
     spsk.append(int(input()))
@@ -11,14 +11,14 @@ for j in range(0, num):
 
 print("Введите количесвто рёбер")
 num1 = int(input())
-print("Введите названия рёбер")
+print("Введите названия рёбер (вводите их в формате 1 строка - первая вершина, 2 строка - вторая вершина, смежная первой)")
 spsk1 = []
 for j in range(0, num1):
         a = int(input())
         b = int(input())
         ab = [a, b]
         spsk1.append(ab)
-print("Введите вес рёбер")
+print("Введите вес рёбер (вводите их в соответствии с тем, как вводили рёбра)")
 spsk_ves = []
 for j in range(0, num1):
     spsk_ves.append(int(input()))
