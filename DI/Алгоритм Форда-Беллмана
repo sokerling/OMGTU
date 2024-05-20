@@ -1,0 +1,93 @@
+Console.WriteLine("Откуда начинаем");
+int st = Convert.ToInt32(Console.ReadLine());
+Console.WriteLine("Количество вершин");
+int cv = Convert.ToInt32(Console.ReadLine());
+double[,] sm = new double[cv, cv];
+Console.WriteLine("Введите веса ребер; если не соединены, введите i");
+//Заполение матрицы смежности
+for (int i = 0; i < cv; i++)
+    for (int j = 0; j < cv; j++)
+    {
+        int ii = i + 1;
+        int jj = j + 1;
+        Console.WriteLine(ii + " " + jj);
+        string op = Console.ReadLine();
+        int o = 0;
+        if (int.TryParse(op, out o)) sm[i, j] = o;
+        else if (op == "i") { double o1 = double.PositiveInfinity; sm[i, j] = o1; }
+    }
+int[] p = new int[cv];
+for (int j = 0; j < cv; j++) p[j] = 0;
+double[] l1 = new double[cv];
+double[] l2 = new double[cv];
+double[] com = new double[cv];
+//заполнение первой лямбды
+for (int i = 0; i < cv; i++) if (i != st - 1) l1[i] = sm[i, st - 1]; else l1[i] = 0;
+//остальные лямбды
+bool luck = true;
+for (int i = 0; i < cv-1; i++)
+{
+    for (int j = 0; j < cv; j++)
+    {
+        if (j == st - 1) l2[j] = 0;
+        else
+        {
+            for (int k = 0; k < cv; k++)
+            {
+                com[k] = l1[k] + sm[k, j];
+            }
+            double min = com[0];
+            int b = 0;
+            for (int k = 1; k < cv; k++) if (min > com[k]) { min = com[k]; b = k; }
+            l2[j] = min;
+            bool f = true;
+            p[j] = b;
+        }
+    }
+    //проверка на "-" контур
+    if (i == cv - 2) 
+    {
+        bool ok = true;
+        for (int u = 0; u < cv; u++)
+            if (l1[u] != l2[u]) ok = false;
+        if (!ok) { Console.WriteLine("Контур отрицательного веса обнаружен, закругляемся"); luck = false; }
+    }
+    for (int j = 0; j < cv; j++)
+    {
+        l1[j] = l2[j];
+    }
+}
+if (luck)
+{
+    Console.WriteLine();
+    Console.WriteLine("Ответ");
+    foreach (double er in l2) Console.WriteLine(er);
+    Console.WriteLine("Развернутый ответ");
+    for (int i = 0; i < cv; i++)
+    {
+        if (i == st - 1)
+        {
+            Console.WriteLine("--------");
+            Console.WriteLine("Вершина: {0}", i + 1);
+            Console.WriteLine("Из нее вышли, путь = 0");
+        }
+        else
+        {
+            Console.WriteLine("--------");
+            Console.WriteLine("Вершина: {0}", i + 1);
+            Console.WriteLine("Длина минимального пути до нее: {0}", l2[i]);
+            int[] pre = new int[cv];
+            int prep = p[i];
+            for (int j = 0; j < cv; j++)
+            {
+                if (j == 0) pre[0] = p[i];
+                else pre[j] = p[prep];
+                prep = pre[j];
+                if (pre[j] == 0) break;
+            }
+            Console.Write("Маршрут (с конца): ");
+            foreach (int u in pre) if (u == 0) { break; } else Console.Write($"  {u + 1}  ");
+            Console.WriteLine();
+        }
+    }
+}
