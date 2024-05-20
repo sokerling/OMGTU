@@ -56,26 +56,7 @@ namespace ConsoleApplication43
             while (true)
             {
                 a = Rec(sm, p, pp, a);
-                /* bool f = false;
-                 for (int j = 0; j < 7; j++) if (sm[a, j] == 1 && !p.Contains(j)) { p.Add(j); pp.Push(j); a = j; f = true; break; }
-                 if (!f)
-                 {
-
-                     for (int j = 0; j < 7; j++) if (sm[a, j] == 1 && !p.Contains(j)) { p.Add(j); pp.Push(j); a = j; f = true; break; }
-                     if (!f)
-                     {
-                         for (int j = 0; j < 7; j++) if (sm[a, j] == 1 && !p.Contains(j)) { p.Add(j); pp.Push(j); a = j; f = true; break; }
-                         if (!f)
-                         {
-                             for (int j = 0; j < 7; j++) if (sm[a, j] == 1 && !p.Contains(j)) { p.Add(j); pp.Push(j); a = j; f = true; break; }
-                             if (!f)
-                             {
-                                 for (int j = 0; j < 7; j++) if (sm[a, j] == 1 && !p.Contains(j)) { p.Add(j); pp.Push(j); a = j; f = true; break; }
-                                 //...
-                             }
-                         }
-                     }
-                 }*/
+               
                 if (pp.Count==0)
                 {
                     for (int i = 0; i < 7; i++)
