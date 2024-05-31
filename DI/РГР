@@ -1,38 +1,56 @@
 import math
+import os
 
 
-print("Введите количество хабов в сети и количество количество возможных соединений хабов: ")
-stroka = input().split(" ")
-N, M = int(stroka[0]), int(stroka[1])
-V = {1}
-Spsk_Result = []
-Spsk_Reber = [[math.inf, -1, -1]]
-print("Введите все возможные соединения хабов: ")
-for j in range(0, M):
-    srtoka = input().split(" ")
-    Spsk_Reber.append([int(srtoka[0]), int(srtoka[1]), int(srtoka[2])])
-
-
-def get_min(Spsk_Reber, V):
-    jm = [math.inf, -1, -1]
-    for j in V:
-        jj = min(Spsk_Reber, key=lambda x: x[0] if (x[1] == j or x[2] == j) and (x[1] not in V or x[2] not in V) else math.inf)
-        if jm[0] > jj[0]:
-            jm = jj
-
-    return jm
-
-
-while len(V) < N:
-    j = get_min(Spsk_Reber, V)
-    if j[0] == math.inf:
-        break
-    Spsk_Result.append(j)
-    V.add(j[1])
-    V.add(j[2])
-
-print(f"Всего использовано кабелей: {len(Spsk_Result)}")
 num = 0
-for j in Spsk_Result:
-    num += 1
-    print(f"Пара хабов №{num}: {j[1]}, {j[2]} \n Длина кабеля: {j[0]}")
+while num != 4:
+    print("1) Начать \n2) Условия задачи \n3) Об авторе \n4) Выход\nВыберите действие: ")
+    num = int(input())
+
+    if num == 1:
+        os.system('cls||clear')
+        print("Введите количество хабов в сети и количество количество возможных соединений хабов: ")
+        stroka = input().split(" ")
+        N, M = int(stroka[0]), int(stroka[1])
+        V = {1}
+        Spsk_Result = []
+        Spsk_Reber = [[math.inf, -1, -1]]
+        print("Введите все возможные соединения хабов: ")
+        for j in range(0, M):
+            srtoka = input().split(" ")
+            Spsk_Reber.append([int(srtoka[0]), int(srtoka[1]), int(srtoka[2])])
+
+
+        def get_min(Spsk_Reber, V):
+            jm = [math.inf, -1, -1]
+            for j in V:
+                jj = min(Spsk_Reber, key=lambda x: x[0] if (x[1] == j or x[2] == j) and (x[1] not in V or x[2] not in V) else math.inf)
+                if jm[0] > jj[0]:
+                    jm = jj
+
+            return jm
+
+
+        while len(V) < N:
+            j = get_min(Spsk_Reber, V)
+            if j[0] == math.inf:
+                break
+            Spsk_Result.append(j)
+            V.add(j[1])
+            V.add(j[2])
+
+        print(f"Всего использовано кабелей: {len(Spsk_Result)}")
+        num = 0
+        for j in Spsk_Result:
+            num += 1
+            print(f"Пара хабов №{num}: {j[1]}, {j[2]} \n Длина кабеля: {j[0]}]\n")
+        
+    if num == 2:
+        os.system('cls||clear')
+        print(" Андрей работает системным администратором и планирует создание новой сети в своей компании. Всего будет N хабов, они будут соединены друг с другом с помощью кабелей.\n Поскольку каждый сотрудник компании должен иметь доступ ко всей сети, каждый хаб должен быть достижим от любого другого хаба – возможно, через несколько промежуточных хабов.\nПоскольку имеются кабели различных типов и короткие кабели дешевле, требуется сделать такой план сети (соединения хабов), чтобы максимальная длина одного кабеля была как можно меньшей.\nЕсть еще одна проблема – не каждую пару хабов можно непосредственно соединять по причине проблем совместимости и геометрических ограничений здания. Андрей снабдит вас всей необходимой информацией о возможных соединениях хабов.\n Необходимо помочь Андрею найти способ соединения хабов, который удовлетворит всем указанным выше условиям.\n")
+    
+    if num == 3:
+        os.system('cls||clear')
+        print("Студент 1 курса ОмГТУ группы ФИТ-231, Мельников Максим Кириллович\n")
+
+os.system('cls||clear')
