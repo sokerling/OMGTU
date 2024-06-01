@@ -1,0 +1,30 @@
+def transform_word(word):
+    t_word = ''
+    s, d = 1, -1
+    c_index = len(word) // 2
+    t_word += word[c_index]
+    for i in range(len(word) - 1):
+        t_word += word[c_index + s * d]
+        if i % 2 == 1:
+            s += 1
+        d *= -1
+    return t_word
+
+with open('Input.txt') as f:
+    data = f.read().splitlines()
+
+data = data[0].split()
+phrase = []
+s, d = 1, -1
+c_index = len(data) // 2
+phrase.append(transform_word(data[c_index]))
+for i in range(len(data) - 1):
+    phrase.append(transform_word(data[c_index + s * d]))
+    if i % 2 == 1:
+        s += 1
+    d *= -1
+
+result = ' '.join(phrase)
+
+with open('Output.txt', 'w') as f:
+    f.write(result)
