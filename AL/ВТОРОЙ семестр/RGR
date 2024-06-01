@@ -54,6 +54,9 @@ namespace RGR_Algor
                 }
                 else
                 {
+                    if (stack.Count < 2)
+                        throw new InvalidOperationException("Ошибка. Некорректная последовательность операторов и операндов");
+
                     double b = stack.Pop();
                     double a = stack.Pop();
                     switch (token)
@@ -77,6 +80,9 @@ namespace RGR_Algor
                     }
                 }
             }
+
+            if (stack.Count != 1)
+                throw new InvalidOperationException("Ошибка. Некорректная последовательность операторов и операндов");
 
             return stack.Pop();
         }
