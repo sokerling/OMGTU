@@ -1,0 +1,56 @@
+def count_valid_words(N, words, F, start_limits, L, end_limits):
+    from collections import defaultdict
+
+    start_count = defaultdict(int)
+    end_count = defaultdict(int)
+
+    for letter, limit in start_limits:
+        start_count[letter] = limit
+
+    for letter, limit in end_limits:
+        end_count[letter] = limit
+
+    valid_count = 0
+
+    for word in words:
+        start_letter = word[0]
+        end_letter = word[-1]
+
+        if start_letter in start_count and end_letter in end_count:
+            if start_count[start_letter] > 0 and end_count[end_letter] > 0:
+                valid_count += 1
+                start_count[start_letter] -= 1
+                end_count[end_letter] -= 1
+
+    return valid_count
+
+with open("Input.txt", "r") as file:
+    data = file.read().strip().split('\n')
+
+index = 0
+N = int(data[index])
+index += 1
+words = []
+for _ in range(N):
+    words.append(data[index])
+    index += 1
+
+F = int(data[index])
+index += 1
+start_limits = []
+for _ in range(F):
+    b, k = data[index].split()
+    start_limits.append((b, int(k)))
+    index += 1
+
+L = int(data[index])
+index += 1
+end_limits = []
+for _ in range(L):
+    b, k = data[index].split()
+    end_limits.append((b, int(k)))
+    index += 1
+
+result = count_valid_words(N, words, F, start_limits, L, end_limits)
+with open("Output.txt", "w") as file:
+    file.write(str(result))
