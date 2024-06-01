@@ -1,0 +1,34 @@
+def process_spell(actions):
+    results = []
+
+    for action in actions:
+        parts = action.split()
+        command = parts[0]
+        ingredients = parts[1:]
+
+        for i in range(len(ingredients)):
+            if ingredients[i].isdigit():
+                ingredients[i] = results[int(ingredients[i]) - 1]
+
+        if command == "MIX":
+            spell = f"MX{''.join(ingredients)}XM"
+        elif command == "WATER":
+            spell = f"WT{''.join(ingredients)}TW"
+        elif command == "DUST":
+            spell = f"DT{''.join(ingredients)}TD"
+        elif command == "FIRE":
+            spell = f"FR{''.join(ingredients)}RF"
+        else:
+            raise ValueError(f"Unknown command: {command}")
+
+        results.append(spell)
+
+    return results[-1]
+
+with open("Input.txt", "r") as file:
+    actions = file.read().strip().split('\n')
+
+final_spell = process_spell(actions)
+
+with open("Output.txt", "w") as file:
+    file.write(final_spell)
