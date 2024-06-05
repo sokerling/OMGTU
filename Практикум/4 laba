@@ -1,0 +1,72 @@
+using System.Reflection;
+
+Assembly asm = Assembly.LoadFrom("core.dll");
+Console.WriteLine($"Полное имя сборки: {asm.FullName}");
+Type[] types = asm.GetTypes();
+Console.WriteLine($"Типы:");
+Console.WriteLine($"----------------------------------------------------------------");
+Console.WriteLine($"\tКлассы:");
+Console.WriteLine($"----------------------------------------------------------------");
+types.ToList().Where(ty => ty.IsClass == true).ToList().ForEach(t => 
+{   
+    Console.WriteLine($"\t--------------------");
+    Console.WriteLine($"\tИмя КЛАССА: {t.Name}");
+    Console.WriteLine($"\t--------------------");
+    Console.WriteLine($"\t\tСписок публичных методов:");
+    Console.WriteLine($"\t\t[");
+    Console.WriteLine($"\t\t--------------------------------------------------");
+    t.GetMethods().Where(me => me.IsPublic).ToList().ForEach(m => 
+    {
+        Console.WriteLine($"\t\tИмя МЕТОДА: {m.Name}");
+        Console.WriteLine($"\t\tТип Возвращаемого значения: {m.ReturnType}");
+        Console.WriteLine($"\t\t\t----------------");
+        Console.WriteLine($"\t\t\tСписок параметров:");
+        Console.WriteLine($"\t\t\t[");
+        m.GetParameters().ToList().ForEach(p => 
+        {   
+            Console.WriteLine($"\t\t\tИмя: {p.Name}");
+            Console.WriteLine($"\t\t\tТип: {p.ParameterType}");
+        }
+        );
+        Console.WriteLine($"\t\t\t]");
+        Console.WriteLine($"\t\t\t----------------");
+        Console.WriteLine($"\t\t--------------------------------------------------");
+    }
+    );
+    Console.WriteLine($"\t\t]");
+}
+);
+Console.WriteLine($"\t----------------");
+Console.WriteLine($"\tИнтерфейсы:");
+Console.WriteLine($"\t----------------");
+types.ToList().Where(ty => ty.IsInterface == true).ToList().ForEach(t => 
+{   
+    Console.WriteLine($"\t--------------------");
+    Console.WriteLine($"\tИмя ИНТЕРФЕЙСА: {t.Name}");
+    Console.WriteLine($"\t--------------------");
+    Console.WriteLine($"\t\tСписок публичных методов:");
+    Console.WriteLine($"\t\t[");
+    Console.WriteLine($"\t\t--------------------------------------------------");
+    t.GetMethods().Where(me => me.IsPublic).ToList().ForEach(m => 
+    {
+        Console.WriteLine($"\t\tИмя МЕТОДА: {m.Name}");
+        Console.WriteLine($"\t\tТип Возвращаемого значения: {m.ReturnType}");
+        Console.WriteLine($"\t\t\t----------------");
+        Console.WriteLine($"\t\t\tСписок параметров:");
+        Console.WriteLine($"\t\t\t[");
+        m.GetParameters().ToList().ForEach(p => 
+        {   
+            Console.WriteLine($"-----------------");
+            Console.WriteLine($"\t\t\tИмя: {p.Name}");
+            Console.WriteLine($"\t\t\tТип: {p.ParameterType}");
+        }
+        );
+        Console.WriteLine($"\t\t\t]");
+        Console.WriteLine($"\t\t\t----------------");
+        Console.WriteLine($"\t\t--------------------------------------------------");
+    }
+    );
+    Console.WriteLine($"\t\t]");
+    Console.WriteLine($"\t----------------");
+}
+);
