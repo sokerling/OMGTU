@@ -5,16 +5,32 @@ def floyd_warshall(graph):
     V = len(graph)
 
     dist = [[INF] * V for _ in range(V)]
+    next_vertex = [[-1] * V for _ in range(V)]
+
     for i in range(V):
         for j in range(V):
             dist[i][j] = graph[i][j]
+            if graph[i][j] != INF and i != j:
+                next_vertex[i][j] = j
 
     for k in range(V):
         for i in range(V):
             for j in range(V):
-                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+                if dist[i][k] + dist[k][j] < dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+                    next_vertex[i][j] = next_vertex[i][k]
 
-    return dist
+    return dist, next_vertex
+
+
+def construct_path(next_vertex, u, v):
+    if next_vertex[u][v] == -1:
+        return None
+    path = [u]
+    while u != v:
+        u = next_vertex[u][v]
+        path.append(u)
+    return path
 
 
 graph = [
@@ -24,8 +40,25 @@ graph = [
     [INF, INF, 2, 0]
 ]
 
-dist = floyd_warshall(graph)
+dist, next_vertex = floyd_warshall(graph)
 
 print("Матрица кратчайших расстояний между всеми парами вершин:")
 for row in dist:
     print(row)
+
+while True:
+    try:
+        start = int(input("Введите начальную вершину: "))
+        end = int(input("Введите конечную вершину: "))
+        if start < 0 or end < 0 or start >= len(graph) or end >= len(graph):
+            print("Неверный ввод, попробуйте снова.")
+            continue
+        path = construct_path(next_vertex, start, end)
+        if path is None:
+            print(f"Нет пути из вершины {start} в вершину {end}.")
+        else:
+            print(f"Кратчайший путь из вершины {start} в вершину {end}: {path}")
+            print(f"Длина пути: {dist[start][end]}")
+        break
+    except ValueError:
+        print("Неверный ввод, пожалуйста, введите числа.")
