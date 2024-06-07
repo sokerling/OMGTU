@@ -1,0 +1,157 @@
+using System.IO;
+using Newtonsoft.Json;
+using System.Linq;
+
+public class Files
+{
+    public string taskName { get; set; }
+    public List<Student> data { get; set; }
+}
+
+
+public class Student
+{
+    public string name { get; set; }
+    public string group { get; set; }
+    public string discipline { get; set; }
+    public int mark { get; set; }
+}
+
+
+public class Student_GPA
+{
+
+   public string Cadet { get; set; }
+   public double GPA { get; set; }
+
+   public Student_GPA(string cadet, double gpa)
+   {
+      Cadet = cadet;
+      GPA = gpa;
+   }
+}
+
+
+public class Group_GPA_ByDis
+{
+   public string Discipline {get; set; }
+   public string Group {get; set; }
+   public double GPA {get; set; }
+
+   public Group_GPA_ByDis(string dis, string gr, double gpa)
+   {
+      Discipline = dis;
+      Group = gr;
+      GPA = gpa;
+   }
+}
+
+
+public class Response1
+{
+    List<Student_GPA> rsp1;
+    public List<Student_GPA> Response {get => rsp1; set => this.rsp1 = value; }
+    public Response1(List<Student_GPA> rsp1)
+    {
+        this.rsp1 = rsp1;
+    }
+}
+
+
+public class Response2
+{
+    List<object> rsp2;
+    public List<object> Response {get => rsp2; set => this.rsp2 = value; }
+    public Response2(List<object> rsp2)
+    {
+        this.rsp2 = rsp2;
+    }
+}
+
+
+public class Response3
+{
+    List<Group_GPA_ByDis> rsp3;
+    public List<Group_GPA_ByDis> Response {get => rsp3; set => this.rsp3 = value; }
+    public Response3(List<Group_GPA_ByDis> rsp3)
+    {
+        this.rsp3 = rsp3;
+    }
+}
+
+
+string text = File.ReadAllText("./GetStudentsWithHighestGPA.json");
+Files file = System.Text.Json.JsonSerializer.Deserialize<Files>(text);
+Console.WriteLine("GetStudentsWithHighestGPA");
+var st_by_names = from id in file.data 
+    group id by id.name;
+var st_gpa = from el in st_by_names 
+    select new Student_GPA(
+        el.Key, (from k in el 
+            select k.mark
+            ).Average());
+double mx_gpa = (from a in st_gpa 
+    select a.GPA
+    ).Max();
+var st_hi_gpa_ienum = from i in st_gpa 
+    where i.GPA == mx_gpa 
+            select i;
+
+List<Student_GPA> st_hi_gpa_lt = st_hi_gpa_ienum.ToList<Student_GPA>();
+Response1 response1 = new Response1(st_hi_gpa_lt);
+string jsonOut1 = JsonConvert.SerializeObject(response1, Formatting.Indented);
+Console.WriteLine (jsonOut1);
+File.WriteAllText("out1.json", jsonOut1);
+Console.WriteLine("---------------------------");
+
+
+string text1 = File.ReadAllText("./CalculateGPAByDiscipline.json");
+Files file1 = System.Text.Json.JsonSerializer.Deserialize<Files>(text);
+Console.WriteLine("CalculateGPAByDiscipline");
+var lst_dis = (from id in file1.data 
+    select id.discipline
+    ).Distinct();
+var gpa_by_dis_ienum = from disc in lst_dis 
+    select new Dictionary<string, double>
+{
+    {disc, (from st in file1.data 
+        where st.discipline == disc select st.mark
+        ).Average()}
+};
+            
+List<object> gpa_by_dis_lt = gpa_by_dis_ienum.ToList<object>();
+Response2 response2 = new Response2(gpa_by_dis_lt);
+string jsonOut2 = JsonConvert.SerializeObject(response2, Formatting.Indented);
+Console.WriteLine (jsonOut2);
+File.WriteAllText("out2.json", jsonOut2);
+Console.WriteLine("---------------------------");
+
+
+string text2 = File.ReadAllText("./GetBestGroupsByDiscipline.json");
+Files file2 = System.Text.Json.JsonSerializer.Deserialize<Files>(text);
+Console.WriteLine("GetBestGroupsByDiscipline");
+var st_by_dis = from id in file2.data
+    group id by id.discipline;
+var gr_gpa = (from el in st_by_dis 
+    from i in el 
+        select new Group_GPA_ByDis(
+            el.Key, 
+            i.@group, 
+            (from k in el 
+                where k.@group == i.@group 
+                    select k.mark
+            ).Average())
+    ).DistinctBy(i => (i.Group, i.Discipline));
+var mx_gpa_dis_ienum = from i in gr_gpa 
+    where i.GPA == (from a in gr_gpa 
+        where a.Discipline == i.Discipline 
+            select a.GPA
+            ).Max() 
+    select i;
+            
+List<Group_GPA_ByDis> mx_gpa_dis_lt = mx_gpa_dis_ienum.ToList<Group_GPA_ByDis>();
+Response3 response3 = new Response3(mx_gpa_dis_lt);
+string jsonOut3 = JsonConvert.SerializeObject(response3, Formatting.Indented);
+Console.WriteLine (jsonOut3);
+File.WriteAllText("out3.json", jsonOut3);
+Console.WriteLine("---------------------------");
