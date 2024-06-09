@@ -1,0 +1,83 @@
+from collections import defaultdict, deque
+
+
+def parse_input():
+    N, M = map(int, input().strip().split())
+
+    tree = defaultdict(list)
+    edges = []
+
+    for i in range(1, N + 1):
+        Ki, Li = map(int, input().strip().split())
+        tree[Ki].append((i, Li))
+        edges.append((Ki, i, Li))
+
+    apples = []
+    for _ in range(M):
+        Cj, Sj = map(int, input().strip().split())
+        apples.append((Cj, Sj))
+
+    X, Z = map(int, input().strip().split())
+
+    return N, M, tree, edges, apples, X, Z
+
+
+def build_graph(N, edges):
+    graph = defaultdict(list)
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        graph[v].append((u, w))
+    return graph
+
+
+def bfs(graph, start):
+    distances = {start: 0}
+    queue = deque([start])
+
+    while queue:
+        node = queue.popleft()
+        current_distance = distances[node]
+
+        for neighbor, weight in graph[node]:
+            if neighbor not in distances:
+                distances[neighbor] = current_distance + weight
+                queue.append(neighbor)
+
+    return distances
+
+
+def find_min_path_to_apples(N, tree, edges, apples, X, Z):
+    graph = build_graph(N, edges)
+
+    target_apples = [Cj for Cj, Sj in apples if Sj >= Z]
+
+    if not target_apples:
+        return 0
+
+    start_distances = bfs(graph, X)
+
+    apple_distances = {}
+    for apple in target_apples:
+        apple_distances[apple] = bfs(graph, apple)
+
+    from itertools import permutations
+
+    min_path_length = float('inf')
+    for perm in permutations(target_apples):
+        path_length = start_distances[perm[0]]
+        for i in range(1, len(perm)):
+            path_length += apple_distances[perm[i - 1]][perm[i]]
+
+        min_path_length = min(min_path_length, path_length)
+
+    return min_path_length
+
+
+def main():
+    N, M, tree, edges, apples, X, Z = parse_input()
+    result = find_min_path_to_apples(N, tree, edges, apples, X, Z)
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
