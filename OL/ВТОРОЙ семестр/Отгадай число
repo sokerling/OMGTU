@@ -1,0 +1,30 @@
+from sympy import symbols, Eq, solve
+
+def calculate_number(actions, result):
+    equation = 'x'
+    for action in actions:
+        if action[0] in '+-':
+            equation += ' ' + action
+        else:
+            equation = f'({equation}) {action}'
+    x = symbols('x')
+    equal = Eq(eval(equation), result)
+    solution = solve(equal, x)
+    return solution[0]
+
+def main(input_file, output_file):
+    with open(input_file, 'r') as f:
+        lines = f.readlines()
+
+    actions = [line.strip() for line in lines[1:-1]]
+    result = int(lines[-1])
+
+    x = calculate_number(actions, result)
+
+    with open(output_file, 'w') as f:
+        f.write(str(x))
+
+if __name__ == "__main__":
+    input_file = 'input_s1_12.txt'
+    output_file = 'output.txt'
+    main(input_file, output_file)
