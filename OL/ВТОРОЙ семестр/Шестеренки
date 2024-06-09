@@ -1,0 +1,108 @@
+class Wheel:
+    def __init__(self, num, zub, rot, rpm):
+        self.num = num
+        self.zub = zub
+        self.rot = rot
+        self.rpm = rpm
+
+    def __repr__(self):
+        return f'Wheel {self.num}'
+
+
+def read_input(file_path):
+    with open(file_path, 'r') as file:
+        N, M = map(int, file.readline().split())
+        shest_data = {}
+        connects = []
+        all_edges = set()
+        for i in range(N):
+            num, n_zub = map(int, file.readline().split())
+            shest_data[num] = n_zub
+        for i in range(M):
+            c = list(map(int, file.readline().split()))
+            all_edges |= set(c)
+            connects.append(c)
+            connects.append(c[::-1])
+        z1, z2 = map(int, file.readline().split())
+        direction = int(file.readline())
+    return shest_data, connects, all_edges, z1, z2, direction
+
+
+def calculate_rotation(shest_data, connects, all_edges, z1, z2, direction):
+    queue = [[Wheel(z1, shest_data[z1], direction, 1)]]
+    i = 0
+    divergents = []
+
+    while i < len(queue):
+        j = len(queue[i]) - 1
+        go = True
+        while go:
+            pairs = [pair for pair in connects if pair[0] == queue[i][j].num]
+            l = 0
+            while l < len(pairs):
+                if pairs[l][1] in [w.num for w in queue[i]]:
+                    pairs.pop(l)
+                else:
+                    l += 1
+
+            v = round(queue[i][j].zub * queue[i][j].rpm / shest_data[pairs[0][1]], 3)
+            new_wheel = Wheel(pairs[0][1], shest_data[pairs[0][1]], queue[i][j].rot * -1, v)
+            queue[i].append(new_wheel)
+            pairs.pop(0)
+            if len(pairs) > 0:
+                divergents.append(pairs[0][0])
+                for k in range(1, len(pairs) + 1):
+                    v = round(queue[i][j].zub * queue[i][j].rpm / shest_data[pairs[0][1]], 3)
+                    new_wheel = Wheel(pairs[0][1], shest_data[pairs[0][1]], queue[i][j].rot * -1, v)
+                    queue.insert(i + k, queue[i][:j + 1])
+                    queue[i + k].append(new_wheel)
+            if queue[i][-1].num == z2:
+                go = False
+            j += 1
+        i += 1
+
+    repeat_edges = []
+    for v in list(all_edges):
+        count = 0
+        for q in queue:
+            if v in [el.num for el in q]:
+                count += 1
+        if count > 1:
+            repeat_edges.append(v)
+
+    bad_edges = set(repeat_edges) - set(divergents)
+
+    ok = True
+    for bv in bad_edges:
+        last_wheel = 0
+        for q in queue:
+            bad_v = [wh for wh in q if wh.num == bv]
+            if bad_v:
+                bad_v = bad_v[0]
+                if last_wheel:
+                    if not (last_wheel.rot == bad_v.rot and last_wheel.rpm == bad_v.rpm):
+                        ok = False
+                        break
+                last_wheel = bad_v
+        if not ok:
+            break
+
+    if not ok:
+        return -1, None, None
+    else:
+        return 1, queue[0][-1].rot, queue[0][-1].rpm
+
+
+def main(input_file, output_file):
+    shest_data, connects, all_edges, z1, z2, direction = read_input(input_file)
+    result, rot, rpm = calculate_rotation(shest_data, connects, all_edges, z1, z2, direction)
+    with open(output_file, 'w') as file:
+        file.write(str(result) + '\n')
+        if result == 1:
+            file.write(str(rot) + '\n')
+            file.write('{:.3f}\n'.format(rpm))
+
+
+input_file = 'input_s1_01.txt'
+output_file = 'Output.txt'
+main(input_file, output_file)
