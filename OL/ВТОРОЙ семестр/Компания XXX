@@ -1,0 +1,62 @@
+def check_subordinates(boss_id):
+    if boss_id in relations_dict.keys():
+        return True
+    return False
+
+relations_dict = {}
+names_dict = {}
+counter = 0
+boss_id = ''
+line = input()
+
+while line != 'END':
+    employee_id = line[:4]
+    if counter % 2 == 0:
+        if employee_id not in relations_dict.keys():
+            relations_dict[employee_id] = []
+        boss_id = employee_id
+    else:
+        relations_dict[boss_id].append(employee_id)
+    counter += 1
+    counter %= 2
+    if ' ' in line:
+        employee_id, name = line[:4], line[5:]
+        if employee_id in names_dict.keys():
+            if names_dict[employee_id] == '':
+                names_dict[employee_id] = name
+        else:
+            names_dict[employee_id] = name
+    else:
+        if employee_id not in names_dict.keys():
+            names_dict[employee_id] = ''
+    line = input()
+
+queue = []
+ok = True
+search_input = input()
+if len(set(search_input) | set('0123456789')) == 10:
+    if check_subordinates(search_input):
+        queue.extend(relations_dict[search_input])
+    else:
+        print('NO')
+        ok = False
+else:
+    for k, v in names_dict.items():
+        if v == search_input:
+            if check_subordinates(k):
+                queue.extend(relations_dict[k])
+            else:
+                print('NO')
+                ok = False
+if ok:
+    i = 0
+    while i < len(queue):
+        if check_subordinates(queue[i]):
+            queue.extend(relations_dict[queue[i]])
+        i += 1
+    queue.sort()
+    for subordinate in queue:
+        if names_dict[subordinate]:
+            print(subordinate, names_dict[subordinate])
+        else:
+            print(subordinate, "Unknown Name")
